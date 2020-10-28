@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class CameraController : MonoBehaviour
+public class CameraController : NetworkBehaviour
 {
     public Transform cameraTransform;
     public Transform followTransform;
@@ -40,13 +41,17 @@ public class CameraController : MonoBehaviour
 
         if (bindToPlayer)
         {
-            followTransform = GameObject.FindGameObjectWithTag("Player").transform;
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+            if (player == null) return;
+            
+            followTransform = player.transform;
         }
     }
 
     // Update is called once per frame
     void Update()
-    {
+    { 
         HandleMouseInput();
         HandleRotation();
         HandleZoom();
